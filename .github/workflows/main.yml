@@ -10,25 +10,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v3
+      - name: Install Power Platform Tools
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Authenticate & Export Solution
+        uses: microsoft/powerplatform-actions/export-solution@v1
         with:
-          node-version: '18' 
-
-      - name: Install Power Platform CLI
-        run: npm install -g pac
-
-      - name: Authenticate
-        run: |
-          pac auth create --url "${{ secrets.POWER_PLATFORM_URL }}" --username "${{ secrets.POWER_PLATFORM_USERNAME }}" --password "${{ secrets.POWER_PLATFORM_PASSWORD }}"
-
-      - name: Export Solution
-        run: |
-          pac solution export --name YourSolutionName --path solution.zip --managed false
+          environment-url: ${{ secrets.POWER_PLATFORM_URL }}
+          user-name: ${{ secrets.POWER_PLATFORM_USERNAME }}
+          password-secret: ${{ secrets.POWER_PLATFORM_PASSWORD }}
+          solution-name: YourSolutionName
+          solution-output-file: solution.zip
+          managed: false
 
       - name: Unpack Solution
-        run: |
-          pac solution unpack --zipfile solution.zip --folder src/solution --packagetype Unmanaged
+        uses: microsoft/powerplatform-actions/unpack-solution@v1
+        with:
+          solution-file: solution.zip
+          solution-folder: src/solution
+          solution-type: Unmanaged
 
       - name: Commit files
         run: |
