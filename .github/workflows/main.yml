@@ -15,8 +15,8 @@ jobs:
 
       - name: Authenticate
         run: |
-          pac auth create --url ${{ secrets.POWER_PLATFORM_URL }} \
-          --username ${{ secrets.POWER_PLATFORM_USERNAME }} \
+          pac auth create --url ${{ secrets.POWER_PLATFORM_URL }} --
+          --username ${{ secrets.POWER_PLATFORM_USERNAME }} --
           --password ${{ secrets.POWER_PLATFORM_PASSWORD }}
 
       - name: Export Solution
